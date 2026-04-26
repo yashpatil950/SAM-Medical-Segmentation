@@ -7,6 +7,19 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <nav class="top-nav">
+    <div class="container nav-inner">
+      <a href="#overview" class="brand">SAM MedSeg Report</a>
+      <div class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#results">Results</a>
+        <a href="#methods">Methods</a>
+        <a href="#figures">Figures</a>
+        <a href="#conclusion">Conclusion</a>
+      </div>
+    </div>
+  </nav>
+
   <header class="hero">
     <div class="hero-overlay"></div>
     <img class="hero-bg" src="./assets/ppt_media/image1.png" alt="Project banner visual" />
@@ -25,6 +38,24 @@
   </header>
 
   <main>
+    <section class="container section">
+      <h2>Key Takeaways</h2>
+      <div class="grid three">
+        <article class="card takeaway">
+          <h3>Best Overall Accuracy</h3>
+          <p>Fine-tuned SAM3 with bbox prompting reaches Dice <strong>0.9417</strong> and IoU <strong>0.8952</strong>, highest among compared settings.</p>
+        </article>
+        <article class="card takeaway">
+          <h3>Largest Reliability Gain</h3>
+          <p>Failure for bbox drops from <strong>30.0%</strong> (zero-shot SAM3) to <strong>0.0%</strong> after fine-tuning, indicating strong domain adaptation.</p>
+        </article>
+        <article class="card takeaway">
+          <h3>Prompt Robustness Improved</h3>
+          <p>Text-prompt behavior improves substantially post-training (TPG from <strong>-0.3147</strong> to <strong>-0.0078</strong>), reducing prompt sensitivity.</p>
+        </article>
+      </div>
+    </section>
+
     <section class="container section" id="overview">
       <h2>Project Overview</h2>
       <div class="card" style="margin-bottom: 1rem;">
@@ -63,7 +94,7 @@
         <article class="stat-card">
           <p class="label">SAM2 Best Prompt</p>
           <p class="value">BBox Dice 0.8882</p>
-          <p class="meta">IoU 0.8136, Failure 4.3% (N=1000)</p>
+          <p class="meta">IoU 0.8136, Failure 4.3% (N=1000) <span class="delta-badge">Reference baseline</span></p>
         </article>
         <article class="stat-card">
           <p class="label">SAM2 Text Prompt Gain (TPG)</p>
@@ -73,7 +104,7 @@
         <article class="stat-card">
           <p class="label">SAM3 Zero-Shot Best Prompt</p>
           <p class="value">BBox Dice 0.6885</p>
-          <p class="meta">IoU 0.6327, Failure 30.0% (40 rows saved)</p>
+          <p class="meta">IoU 0.6327, Failure 30.0% (40 rows saved) <span class="delta-badge negative">Hard starting point</span></p>
         </article>
         <article class="stat-card">
           <p class="label">SAM3 Zero-Shot TPG</p>
@@ -83,12 +114,12 @@
         <article class="stat-card">
           <p class="label">Fine-Tuned SAM3 Best Prompt</p>
           <p class="value positive">BBox Dice 0.9417</p>
-          <p class="meta">IoU 0.8952, Failure 0.0%</p>
+          <p class="meta">IoU 0.8952, Failure 0.0% <span class="delta-badge positive">+0.2532 Dice vs zero-shot bbox</span></p>
         </article>
         <article class="stat-card">
           <p class="label">Fine-Tuned TPG</p>
           <p class="value mild">-0.0078</p>
-          <p class="meta">Nearly closes text vs point gap after training</p>
+          <p class="meta">Nearly closes text vs point gap after training <span class="delta-badge positive">+0.3069 TPG recovery</span></p>
         </article>
       </div>
     </section>
@@ -262,7 +293,7 @@
       </div>
     </section>
 
-    <section class="container section">
+    <section class="container section" id="methods">
       <h2>Method and Evaluation Logic</h2>
       <div class="grid three">
         <article class="card">
@@ -287,6 +318,16 @@
           </p>
         </article>
       </div>
+    </section>
+
+    <section class="container section">
+      <h2>Reproducibility Snapshot</h2>
+      <article class="card reproducibility">
+        <p><strong>Core notebooks:</strong> <code>SAM2.ipynb</code>, <code>SAM3.ipynb</code>, <code>SAM3Fine_tuned.ipynb</code></p>
+        <p><strong>Primary metrics:</strong> Dice, IoU, Failure Rate, Text Prompt Gain (TPG)</p>
+        <p><strong>Fine-tuning context:</strong> 15 epochs, 800 training images, best-checkpoint selection by validation Dice</p>
+        <p><strong>Prompt modes compared:</strong> bbox, point, text, auto</p>
+      </article>
     </section>
 
     <section class="container section">
@@ -378,28 +419,50 @@
       </div>
     </section>
 
-    <section class="container section">
+    <section class="container section" id="figures">
       <h2>Figures from Notebook Outputs</h2>
       <div class="gallery dense">
-        <figure><img src="./assets/notebook_images/SAM2/SAM2_001.png" alt="SAM2 skin lesion qualitative panel 1" loading="lazy"><figcaption>SAM2 skin-lesion qualitative panel</figcaption></figure>
-        <figure><img src="./assets/ppt_media/image3.jpeg" alt="Skin lesion dermoscopy image sample" loading="lazy"><figcaption>Skin lesion dermoscopy sample image</figcaption></figure>
-        <figure><img src="./assets/notebook_images/SAM3/SAM3_002.png" alt="SAM3 skin lesion qualitative grid" loading="lazy"><figcaption>SAM3 qualitative lesion grid</figcaption></figure>
-        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_003.png" alt="Fine-tuned SAM3 skin lesion qualitative results" loading="lazy"><figcaption>Fine-tuned SAM3 qualitative lesion predictions</figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM2/SAM2_001.png" alt="SAM2 skin lesion qualitative panel 1" loading="lazy"><figcaption>SAM2 skin-lesion qualitative panel <span class="source-tag">Source: SAM2.ipynb</span></figcaption></figure>
+        <figure><img src="./assets/ppt_media/image3.jpeg" alt="Skin lesion dermoscopy image sample" loading="lazy"><figcaption>Skin lesion dermoscopy sample image <span class="source-tag">Source: Medical Presentation..pptx</span></figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3/SAM3_002.png" alt="SAM3 skin lesion qualitative grid" loading="lazy"><figcaption>SAM3 qualitative lesion grid <span class="source-tag">Source: SAM3.ipynb</span></figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_003.png" alt="Fine-tuned SAM3 skin lesion qualitative results" loading="lazy"><figcaption>Fine-tuned SAM3 qualitative lesion predictions <span class="source-tag">Source: SAM3Fine_tuned.ipynb</span></figcaption></figure>
       </div>
     </section>
 
     <section class="container section" id="gallery">
       <h2>Curated Visual Evidence</h2>
       <div class="gallery">
-        <figure><img src="./assets/notebook_images/SAM2/SAM2_003.png" alt="SAM2 comparison chart" loading="lazy"><figcaption>SAM2 prompt comparison chart (Dice/IoU/Failure)</figcaption></figure>
-        <figure><img src="./assets/notebook_images/SAM2/SAM2_004.png" alt="SAM2 scatter and relationship analysis" loading="lazy"><figcaption>SAM2 metric relationship analysis (DSC vs IoU)</figcaption></figure>
-        <figure><img src="./assets/notebook_images/SAM3/SAM3_003.png" alt="SAM3 quantitative summary plots" loading="lazy"><figcaption>SAM3 zero-shot quantitative summary</figcaption></figure>
-        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_001.png" alt="Fine-tuned SAM3 metric chart" loading="lazy"><figcaption>Fine-tuned SAM3 improvement chart</figcaption></figure>
-        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_002.png" alt="Fine-tuned SAM3 comparison chart" loading="lazy"><figcaption>Zero-shot vs fine-tuned comparison</figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM2/SAM2_003.png" alt="SAM2 comparison chart" loading="lazy"><figcaption>SAM2 prompt comparison chart (Dice/IoU/Failure) <span class="source-tag">Source: SAM2.ipynb</span></figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM2/SAM2_004.png" alt="SAM2 scatter and relationship analysis" loading="lazy"><figcaption>SAM2 metric relationship analysis (DSC vs IoU) <span class="source-tag">Source: SAM2.ipynb</span></figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3/SAM3_003.png" alt="SAM3 quantitative summary plots" loading="lazy"><figcaption>SAM3 zero-shot quantitative summary <span class="source-tag">Source: SAM3.ipynb</span></figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_001.png" alt="Fine-tuned SAM3 metric chart" loading="lazy"><figcaption>Fine-tuned SAM3 improvement chart <span class="source-tag">Source: SAM3Fine_tuned.ipynb</span></figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_002.png" alt="Fine-tuned SAM3 comparison chart" loading="lazy"><figcaption>Zero-shot vs fine-tuned comparison <span class="source-tag">Source: SAM3Fine_tuned.ipynb</span></figcaption></figure>
       </div>
     </section>
 
     <section class="container section">
+      <h2>Limitations and Future Work</h2>
+      <div class="grid two">
+        <article class="card">
+          <h3>Current Limitations</h3>
+          <ul>
+            <li>Pipeline remains notebook-driven with manual path edits for local runs.</li>
+            <li>Text prompting in medical context is improved but still less stable than bbox prompting.</li>
+            <li>Cross-dataset generalization is not fully validated in this report.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Future Work</h3>
+          <ul>
+            <li>Convert notebooks into a script-based reproducible pipeline with config files.</li>
+            <li>Evaluate additional medical datasets and robustness under domain shift.</li>
+            <li>Add calibrated uncertainty estimation and clinical error analysis.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section" id="conclusion">
       <h2>Conclusion</h2>
       <article class="card">
         <p>

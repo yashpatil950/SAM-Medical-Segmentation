@@ -20,6 +20,7 @@ html, body {
   font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
   background: radial-gradient(circle at 20% 0%, #121933, #090d1b 65%);
+  scroll-behavior: smooth;
 }
 
 img {
@@ -30,6 +31,48 @@ img {
 .container {
   width: min(1200px, 92%);
   margin: 0 auto;
+}
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1200;
+  backdrop-filter: blur(8px);
+  background: rgba(8, 13, 30, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.nav-inner {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  color: #d6f5ff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.nav-links a {
+  color: #dbe5ff;
+  text-decoration: none;
+  font-size: 0.86rem;
+  padding: 0.25rem 0.45rem;
+  border-radius: 8px;
+}
+
+.nav-links a:hover {
+  background: rgba(110, 231, 255, 0.16);
 }
 
 .hero {
@@ -173,6 +216,10 @@ h2 {
 .card p, .card li {
   color: var(--muted);
   line-height: 1.6;
+}
+
+.takeaway {
+  border-left: 4px solid rgba(110, 231, 255, 0.65);
 }
 
 .stats-band {
@@ -550,6 +597,29 @@ h2 {
   font-size: 0.86rem;
 }
 
+.delta-badge {
+  display: inline-block;
+  margin-top: 0.45rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: #d8f4ff;
+  border: 1px solid rgba(110, 231, 255, 0.45);
+  background: rgba(110, 231, 255, 0.14);
+}
+
+.delta-badge.positive {
+  border-color: rgba(142, 247, 184, 0.55);
+  background: rgba(142, 247, 184, 0.16);
+  color: #ddffe9;
+}
+
+.delta-badge.negative {
+  border-color: rgba(255, 150, 150, 0.55);
+  background: rgba(255, 138, 138, 0.13);
+  color: #ffdede;
+}
+
 .timeline {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -611,6 +681,21 @@ figure figcaption {
   color: var(--muted);
   font-size: 0.84rem;
   padding: 0.6rem 0.7rem;
+}
+
+.source-tag {
+  display: inline-block;
+  margin-left: 0.3rem;
+  margin-top: 0.35rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: #cdd9fa;
+}
+
+.reproducibility p {
+  margin: 0.45rem 0;
 }
 
 .rubric img {
@@ -758,6 +843,16 @@ code {
 @media (max-width: 680px) {
   .hero {
     min-height: 62vh;
+  }
+
+  .nav-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 0.45rem 0;
+  }
+
+  .nav-links {
+    gap: 0.35rem;
   }
 
   .metric-row {
