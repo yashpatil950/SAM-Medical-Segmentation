@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAM Medical Segmentation Project Report</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-overlay"></div>
+    <img class="hero-bg" src="./assets/ppt_media/image1.png" alt="Project banner visual" />
+    <div class="hero-content container">
+      <p class="badge">Computer Vision - Medical Image Segmentation</p>
+      <h1>SAM2 vs SAM3 vs Fine-Tuned SAM3</h1>
+      <p class="subtitle">
+        A practical report on prompt-based lesion segmentation using ISIC-style dermoscopy images,
+        with quantitative evaluation (Dice, IoU, Failure Rate) and visual analysis.
+      </p>
+      <div class="hero-links">
+        <a href="#results">View Results</a>
+        <a href="#gallery" class="secondary">See Visual Gallery</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section" id="overview">
+      <h2>Project Overview</h2>
+      <div class="card" style="margin-bottom: 1rem;">
+        <h3>Project Members</h3>
+        <ul>
+          <li><strong>Member 1:</strong> Yash Vijay Patil - <strong>PRN:</strong> 738001186</li>
+          <li><strong>Member 2:</strong> Taher Mustansir Bhurka - <strong>PRN:</strong> 938005585</li>
+          <li><strong>Member 3:</strong> Jeet Ashokbhai Patel - <strong>PRN:</strong> 138008847</li>
+        </ul>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>Objective</h3>
+          <p>
+            Evaluate how different prompts (bbox, point, text, auto) affect segmentation quality,
+            and test whether fine-tuning SAM3 improves reliability on medical images.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Notebooks Used</h3>
+          <ul>
+            <li><code>SAM2.ipynb</code> - baseline SAM2 benchmark with multiple prompt types.</li>
+            <li><code>SAM3.ipynb</code> - SAM3 zero-shot evaluation pipeline.</li>
+            <li><code>SAM3Fine_tuned.ipynb</code> - fine-tuning and post-training evaluation.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section stats-band" id="results">
+      <h2>Key Quantitative Results</h2>
+      <p class="section-intro">
+        Metrics were extracted directly from notebook outputs in this workspace.
+      </p>
+      <div class="stats-grid">
+        <article class="stat-card">
+          <p class="label">SAM2 Best Prompt</p>
+          <p class="value">BBox Dice 0.8882</p>
+          <p class="meta">IoU 0.8136, Failure 4.3% (N=1000)</p>
+        </article>
+        <article class="stat-card">
+          <p class="label">SAM2 Text Prompt Gain (TPG)</p>
+          <p class="value negative">-0.8750</p>
+          <p class="meta">Text underperformed bbox on this medical benchmark</p>
+        </article>
+        <article class="stat-card">
+          <p class="label">SAM3 Zero-Shot Best Prompt</p>
+          <p class="value">BBox Dice 0.6885</p>
+          <p class="meta">IoU 0.6327, Failure 30.0% (40 rows saved)</p>
+        </article>
+        <article class="stat-card">
+          <p class="label">SAM3 Zero-Shot TPG</p>
+          <p class="value negative">-0.3147</p>
+          <p class="meta">Point prompt outperformed text prompt</p>
+        </article>
+        <article class="stat-card">
+          <p class="label">Fine-Tuned SAM3 Best Prompt</p>
+          <p class="value positive">BBox Dice 0.9417</p>
+          <p class="meta">IoU 0.8952, Failure 0.0%</p>
+        </article>
+        <article class="stat-card">
+          <p class="label">Fine-Tuned TPG</p>
+          <p class="value mild">-0.0078</p>
+          <p class="meta">Nearly closes text vs point gap after training</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section" id="analytics">
+      <h2>Interactive Metrics Dashboard</h2>
+      <p class="section-intro">Animated summary of model behavior across baseline, zero-shot, and fine-tuned settings.</p>
+
+      <div class="kpi-row">
+        <article class="kpi-card">
+          <p class="kpi-label">Best Dice Score</p>
+          <p class="kpi-number" data-target="0.9417" data-decimals="4">0.0000</p>
+          <p class="kpi-meta">Fine-Tuned SAM3 (bbox)</p>
+        </article>
+        <article class="kpi-card">
+          <p class="kpi-label">Failure Reduction</p>
+          <p class="kpi-number" data-target="30.0" data-decimals="1">0.0</p>
+          <p class="kpi-meta">30.0% -&gt; 0.0% from zero-shot bbox to fine-tuned bbox</p>
+        </article>
+        <article class="kpi-card">
+          <p class="kpi-label">Training Set Size</p>
+          <p class="kpi-number" data-target="800" data-decimals="0">0</p>
+          <p class="kpi-meta">Fine-tuning run in notebook</p>
+        </article>
+      </div>
+
+      <div class="charts-grid">
+        <article class="chart-card">
+          <h3>Dice by Prompt (SAM3 Zero-shot vs Fine-tuned)</h3>
+          <div class="grouped-bars">
+            <div class="y-axis-labels">
+              <span>1.0</span><span>0.75</span><span>0.50</span><span>0.25</span><span>0</span>
+            </div>
+            <div class="bars-plot">
+              <div class="group">
+                <div class="bar-wrap">
+                  <div class="vbar zs-dice" data-height="68.85"></div>
+                  <div class="vbar ft-dice" data-height="94.17"></div>
+                </div>
+                <p>BBox</p>
+              </div>
+              <div class="group">
+                <div class="bar-wrap">
+                  <div class="vbar zs-dice" data-height="31.47"></div>
+                  <div class="vbar ft-dice" data-height="89.10"></div>
+                </div>
+                <p>Point</p>
+              </div>
+              <div class="group">
+                <div class="bar-wrap">
+                  <div class="vbar zs-dice" data-height="0"></div>
+                  <div class="vbar ft-dice" data-height="88.32"></div>
+                </div>
+                <p>Text</p>
+              </div>
+              <div class="group">
+                <div class="bar-wrap">
+                  <div class="vbar zs-dice" data-height="9.54"></div>
+                  <div class="vbar ft-dice" data-height="87.19"></div>
+                </div>
+                <p>Auto</p>
+              </div>
+            </div>
+          </div>
+          <div class="legend">
+            <span><i class="dot zs-dice"></i> Zero-shot</span>
+            <span><i class="dot ft-dice"></i> Fine-tuned</span>
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <h3>Failure Rate Comparison (%)</h3>
+          <div class="grouped-bars">
+            <div class="y-axis-labels">
+              <span>100</span><span>75</span><span>50</span><span>25</span><span>0</span>
+            </div>
+            <div class="bars-plot">
+              <div class="group">
+                <div class="bar-wrap">
+                  <div class="vbar zs" data-height="30"></div>
+                  <div class="vbar ft" data-height="0"></div>
+                </div>
+                <p>BBox</p>
+              </div>
+              <div class="group">
+                <div class="bar-wrap">
+                  <div class="vbar zs" data-height="40"></div>
+                  <div class="vbar ft" data-height="0.5"></div>
+                </div>
+                <p>Point</p>
+              </div>
+              <div class="group">
+                <div class="bar-wrap">
+                  <div class="vbar zs" data-height="100"></div>
+                  <div class="vbar ft" data-height="2.5"></div>
+                </div>
+                <p>Text</p>
+              </div>
+              <div class="group">
+                <div class="bar-wrap">
+                  <div class="vbar zs" data-height="90"></div>
+                  <div class="vbar ft" data-height="2.5"></div>
+                </div>
+                <p>Auto</p>
+              </div>
+            </div>
+          </div>
+          <div class="legend">
+            <span><i class="dot zs"></i> Zero-shot</span>
+            <span><i class="dot ft"></i> Fine-tuned</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="shape-grid">
+        <article class="chart-card">
+          <h3>Fine-Tuned Dice Rings (by Prompt)</h3>
+          <div class="ring-grid">
+            <div class="ring-card">
+              <div class="ring" data-percent="94.17"><span class="ring-text">0%</span></div>
+              <p>BBox<br><small>Dice 0.9417</small></p>
+            </div>
+            <div class="ring-card">
+              <div class="ring" data-percent="89.10"><span class="ring-text">0%</span></div>
+              <p>Point<br><small>Dice 0.8910</small></p>
+            </div>
+            <div class="ring-card">
+              <div class="ring" data-percent="88.32"><span class="ring-text">0%</span></div>
+              <p>Text<br><small>Dice 0.8832</small></p>
+            </div>
+            <div class="ring-card">
+              <div class="ring" data-percent="87.19"><span class="ring-text">0%</span></div>
+              <p>Auto<br><small>Dice 0.8719</small></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <h3>Dataset and Size-Sensitivity Context</h3>
+          <h4 class="subheading">Dataset Context</h4>
+          <div class="chip-grid">
+            <span class="metric-chip">SAM2 samples per prompt: <strong>1000</strong></span>
+            <span class="metric-chip">SAM3 evaluated rows: <strong>40</strong></span>
+            <span class="metric-chip">Representative lesion coverage: <strong>16.9%</strong></span>
+          </div>
+
+          <h4 class="subheading">Lesion Size Sensitivity (SAM3 Zero-shot Dice)</h4>
+          <div class="metric-bars">
+            <div class="metric-row">
+              <span class="metric-name">Small/BBox</span>
+              <div class="metric-track"><div class="metric-fill" data-percent="93.08"></div></div>
+              <span class="metric-score">0.9308</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-name">Small/Point</span>
+              <div class="metric-track"><div class="metric-fill" data-percent="48.05"></div></div>
+              <span class="metric-score">0.4805</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-name">Medium/BBox</span>
+              <div class="metric-track"><div class="metric-fill" data-percent="32.52"></div></div>
+              <span class="metric-score">0.3252</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-name">Medium/Point</span>
+              <div class="metric-track"><div class="metric-fill" data-percent="6.61"></div></div>
+              <span class="metric-score">0.0661</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2>Method and Evaluation Logic</h2>
+      <div class="grid three">
+        <article class="card">
+          <h3>Data Setup</h3>
+          <p>
+            ISIC-style lesion images and masks are loaded from Colab/Drive paths, resized to model input
+            resolution, then converted to binary masks for scoring.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Prompt Strategies</h3>
+          <p>
+            Each image is evaluated via text, bounding-box, point, and automatic prompting.
+            Outputs are converted to binary masks and compared against ground truth.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Metrics</h3>
+          <p>
+            Dice and IoU measure overlap quality. Failure rate is computed using IoU &lt; 0.5.
+            TPG compares text prompt Dice relative to baseline prompting.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2>Rigorous Methodology and Technical Explanation</h2>
+      <div class="grid two">
+        <article class="card">
+          <h3>1) Data Processing Protocol</h3>
+          <p>
+            Dermoscopic image-mask pairs are loaded and converted into a consistent binary segmentation format.
+            Masks are thresholded and spatially aligned with model outputs. For SAM3 experiments, inputs are
+            standardized to 1024x1024 resolution to match model expectations, then mapped back to original
+            dimensions for metric computation.
+          </p>
+          <p>
+            To analyze robustness by lesion scale, each sample is assigned a size bucket using lesion coverage
+            ratio (foreground pixels / total pixels): small (&lt; 5%), medium (5-20%), and large (&gt;= 20%).
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>2) Prompting Design</h3>
+          <p>
+            Four prompting modes are evaluated per image: <strong>bounding box</strong>, <strong>point</strong>,
+            <strong>text</strong>, and <strong>automatic</strong>. This isolates prompt sensitivity and allows
+            fair comparison of semantic vs geometric guidance.
+          </p>
+          <p>
+            For each prompt type, the best-scoring predicted mask candidate is selected from model outputs and
+            post-processed to binary form before scoring against ground truth.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>3) Metrics and Mathematical Definitions</h3>
+          <p>
+            Let <em>P</em> be predicted foreground pixels and <em>G</em> be ground-truth foreground pixels:
+          </p>
+          <p>
+            <strong>Dice:</strong> 2|P ∩ G| / (|P| + |G|)<br />
+            <strong>IoU:</strong> |P ∩ G| / |P ∪ G|<br />
+            <strong>Failure Rate:</strong> proportion of cases below thresholded quality criterion used in the notebook pipeline.<br />
+            <strong>TPG:</strong> mean Dice(text) - Dice(reference prompt), indicating text prompt gain/loss.
+          </p>
+          <p>
+            These metrics jointly capture overlap quality, boundary consistency, and reliability across images.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>4) Fine-Tuning Procedure (SAM3)</h3>
+          <p>
+            Fine-tuning uses AdamW optimization, a composite segmentation objective (Dice + BCE), and validation-driven
+            checkpointing. The run shown in notebook outputs trains for 15 epochs on 800 training images, and stores the
+            best model based on validation Dice.
+          </p>
+          <p>
+            This protocol is designed to improve domain adaptation for lesion boundaries while preserving prompt
+            flexibility. Final evaluation is reported on held-out test data using the same prompt-specific pipeline
+            as baseline experiments.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2>Performance Story</h2>
+      <div class="timeline">
+        <div class="step">
+          <h3>1) SAM2 Baseline</h3>
+          <p>
+            SAM2 performs strongly with bbox prompts (Dice 0.8882), but text prompting is not reliable
+            for domain-specific medical boundaries.
+          </p>
+        </div>
+        <div class="step">
+          <h3>2) SAM3 Zero-Shot</h3>
+          <p>
+            Zero-shot SAM3 shows weaker segmentation stability and high failure for text prompts,
+            indicating need for domain adaptation.
+          </p>
+        </div>
+        <div class="step">
+          <h3>3) Fine-Tuned SAM3</h3>
+          <p>
+            Fine-tuning substantially lifts all prompts, with bbox Dice reaching 0.9417 and near-zero
+            failure, and text prompt gap becoming minimal.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2>Figures from Notebook Outputs</h2>
+      <div class="gallery dense">
+        <figure><img src="./assets/notebook_images/SAM2/SAM2_001.png" alt="SAM2 skin lesion qualitative panel 1" loading="lazy"><figcaption>SAM2 skin-lesion qualitative panel</figcaption></figure>
+        <figure><img src="./assets/ppt_media/image3.jpeg" alt="Skin lesion dermoscopy image sample" loading="lazy"><figcaption>Skin lesion dermoscopy sample image</figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3/SAM3_002.png" alt="SAM3 skin lesion qualitative grid" loading="lazy"><figcaption>SAM3 qualitative lesion grid</figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_003.png" alt="Fine-tuned SAM3 skin lesion qualitative results" loading="lazy"><figcaption>Fine-tuned SAM3 qualitative lesion predictions</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="container section" id="gallery">
+      <h2>Curated Visual Evidence</h2>
+      <div class="gallery">
+        <figure><img src="./assets/notebook_images/SAM2/SAM2_003.png" alt="SAM2 comparison chart" loading="lazy"><figcaption>SAM2 prompt comparison chart (Dice/IoU/Failure)</figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM2/SAM2_004.png" alt="SAM2 scatter and relationship analysis" loading="lazy"><figcaption>SAM2 metric relationship analysis (DSC vs IoU)</figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3/SAM3_003.png" alt="SAM3 quantitative summary plots" loading="lazy"><figcaption>SAM3 zero-shot quantitative summary</figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_001.png" alt="Fine-tuned SAM3 metric chart" loading="lazy"><figcaption>Fine-tuned SAM3 improvement chart</figcaption></figure>
+        <figure><img src="./assets/notebook_images/SAM3Fine_tuned/SAM3Fine_tuned_002.png" alt="Fine-tuned SAM3 comparison chart" loading="lazy"><figcaption>Zero-shot vs fine-tuned comparison</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2>Conclusion</h2>
+      <article class="card">
+        <p>
+          Fine-tuning SAM3 on lesion data materially improves segmentation quality and consistency.
+          The biggest gains are seen in failure reduction and prompt robustness, making the model more suitable
+          for medical-image workflows where stable boundaries matter more than single-image wins.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <div id="image-lightbox" class="lightbox" aria-hidden="true">
+    <div class="lightbox-backdrop" data-close="true"></div>
+    <div class="lightbox-content" role="dialog" aria-modal="true" aria-label="Expanded image preview">
+      <button class="lightbox-close" id="lightbox-close-btn" aria-label="Close image preview">&times;</button>
+      <img id="lightbox-image" src="" alt="Expanded project figure" />
+      <p id="lightbox-caption"></p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p><strong>Project Files:</strong> <code>SAM2.ipynb</code>, <code>SAM3.ipynb</code>, <code>SAM3Fine_tuned.ipynb</code></p>
+      <p>Made with precision 🧠✨📊</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const lightbox = document.getElementById("image-lightbox");
+      const lightboxImg = document.getElementById("lightbox-image");
+      const lightboxCaption = document.getElementById("lightbox-caption");
+      const closeBtn = document.getElementById("lightbox-close-btn");
+
+      const clickableImages = document.querySelectorAll(".gallery figure img");
+      const metricFills = document.querySelectorAll(".metric-fill");
+      const rings = document.querySelectorAll(".ring");
+      const vBars = document.querySelectorAll(".vbar");
+      const kpiNumbers = document.querySelectorAll(".kpi-number");
+      const analyticsSection = document.getElementById("analytics");
+      const revealTargets = document.querySelectorAll(
+        ".section h2, .card, .stat-card, .chart-card, .grouped-bars, .ring-card, .timeline .step, .gallery figure, .kpi-card"
+      );
+
+      function openLightbox(img) {
+        const caption = img.closest("figure")?.querySelector("figcaption")?.textContent || "";
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt || "Expanded project figure";
+        lightboxCaption.textContent = caption;
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.classList.add("lightbox-open");
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+        lightboxImg.src = "";
+        document.body.classList.remove("lightbox-open");
+      }
+
+      clickableImages.forEach((img) => {
+        img.classList.add("zoomable");
+        img.addEventListener("click", () => openLightbox(img));
+      });
+
+      closeBtn.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (event) => {
+        if (event.target.matches("[data-close='true']")) closeLightbox();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && lightbox.classList.contains("open")) {
+          closeLightbox();
+        }
+      });
+
+      function animateValue(el) {
+        const target = Number(el.dataset.target || 0);
+        const decimals = Number(el.dataset.decimals || 0);
+        const duration = 1200;
+        const start = performance.now();
+
+        function frame(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const ease = 1 - Math.pow(1 - progress, 3);
+          const value = target * ease;
+          el.textContent = value.toFixed(decimals);
+          if (progress < 1) requestAnimationFrame(frame);
+        }
+
+        requestAnimationFrame(frame);
+      }
+
+      const analyticsObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          metricFills.forEach((bar) => {
+            bar.style.width = `${bar.dataset.percent || 0}%`;
+          });
+
+          vBars.forEach((bar) => {
+            bar.style.height = `${bar.dataset.height || 0}%`;
+          });
+
+          rings.forEach((ring) => {
+            const target = Number(ring.dataset.percent || 0);
+            const label = ring.querySelector(".ring-text");
+            let current = 0;
+            const timer = setInterval(() => {
+              current += 2;
+              if (current >= target) {
+                current = target;
+                clearInterval(timer);
+              }
+              ring.style.setProperty("--ring-p", `${current}%`);
+              if (label) label.textContent = `${Math.round(current)}%`;
+            }, 16);
+          });
+
+          kpiNumbers.forEach((kpi) => animateValue(kpi));
+          observer.disconnect();
+        });
+      }, { threshold: 0.35 });
+
+      if (analyticsSection) analyticsObserver.observe(analyticsSection);
+
+      revealTargets.forEach((el, idx) => {
+        el.classList.add("reveal", `delay-${idx % 5}`);
+      });
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("in-view");
+          revealObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.16, rootMargin: "0px 0px -6% 0px" });
+
+      revealTargets.forEach((el) => revealObserver.observe(el));
+
+      const glitterLayer = document.createElement("div");
+      glitterLayer.className = "glitter-layer";
+      document.body.appendChild(glitterLayer);
+
+      let lastSparkTime = 0;
+      document.addEventListener("pointermove", (event) => {
+        const now = performance.now();
+        if (now - lastSparkTime < 22) return;
+        lastSparkTime = now;
+
+        const sparkle = document.createElement("span");
+        sparkle.className = "sparkle";
+
+        const size = 4 + Math.random() * 6;
+        const driftX = (Math.random() - 0.5) * 28;
+        const driftY = (Math.random() - 0.5) * 28;
+
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${event.clientX}px`;
+        sparkle.style.top = `${event.clientY}px`;
+        sparkle.style.setProperty("--dx", `${driftX}px`);
+        sparkle.style.setProperty("--dy", `${driftY}px`);
+        sparkle.style.animationDuration = `${550 + Math.random() * 350}ms`;
+
+        glitterLayer.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>

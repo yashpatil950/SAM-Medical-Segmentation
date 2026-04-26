@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sam-notebook-workspace"
+version = "0.1.0"
+description = "Notebook-first SAM2/SAM3 medical segmentation workspace."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.7,<3.0",
+  "torchvision>=0.22,<1.0",
+  "torchaudio>=2.7,<3.0",
+  "huggingface_hub>=0.24",
+  "numpy==1.26.4",
+  "pandas>=2.0",
+  "Pillow>=10.0",
+  "matplotlib>=3.7",
+  "seaborn>=0.13",
+  "tqdm>=4.66",
+  "scikit-image>=0.22",
+  "scipy>=1.11",
+  "opencv-python>=4.9",
+  "einops>=0.8",
+  "ninja>=1.11",
+]
+
+[tool.setuptools]
+py-modules = []
