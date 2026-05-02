@@ -218,6 +218,32 @@ h2 {
   line-height: 1.6;
 }
 
+.video-demo-card {
+  margin-top: 1rem;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.video-intro {
+  margin-top: 0;
+  margin-bottom: 0.85rem;
+}
+
+.video-wrap {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #070a16;
+}
+
+.video-wrap video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, calc(100vw - 3rem));
+}
+
 .takeaway {
   border-left: 4px solid rgba(110, 231, 255, 0.65);
 }
@@ -699,13 +725,21 @@ figure figcaption {
   color: var(--muted);
 }
 
-.card:hover,
+.card:not(.video-demo-card):hover,
 .stat-card:hover,
 .kpi-card:hover,
 .chart-card:hover,
 figure:hover,
 .step:hover {
   transform: translateY(-4px) scale(1.02);
+  border-color: rgba(110, 231, 255, 0.6);
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(110, 231, 255, 0.22);
+}
+
+.video-demo-card:hover {
+  transform: translateY(-4px);
   border-color: rgba(110, 231, 255, 0.6);
   box-shadow:
     0 14px 28px rgba(0, 0, 0, 0.35),
